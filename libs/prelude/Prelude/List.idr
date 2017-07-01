@@ -169,15 +169,12 @@ init (x::y::ys) {ok=p}    = x :: init (y::ys) {ok=IsNonEmpty}
 ||| Attempt to Return all but the last element of a list.
 |||
 ||| If the list is empty, return `Nothing`.
-init' : (l : List a) -> Maybe (List a)
-init' []      = Nothing
-init' (x::xs) =
-  case xs of
-    []    => Just []
-    y::ys =>
-      case init' $ y::ys of
-        Nothing => Nothing
-        Just j  => Just $ x :: j
+init' []  = Nothing
+init' [x] = Just []
+init' (x :: y :: ys) =
+    case init' ys of
+        Nothing => Just [x]
+        Just ys' => Just $ x :: y :: ys'
 
 --------------------------------------------------------------------------------
 -- Sublists
